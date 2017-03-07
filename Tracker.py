@@ -1,6 +1,4 @@
 from random import randint
-from pyactor.context import set_context, create_host, sleep, shutdown
-
 
 
 
@@ -20,6 +18,7 @@ class Tracker(object):
         if not self.peers.has_key(torrent_hash):
             self.peers[torrent_hash] = {}
         self.peers[torrent_hash][peer_ref]=10
+        print self.peers
 
     def get_peers(self,torrent_hash):
         array=[]
@@ -30,7 +29,7 @@ class Tracker(object):
         #    array.append(randint(0,keys.__len__()))
        # array
         print keys
-        keys
+        return keys
 
     def update(self):
         for i in self.peers.keys():
@@ -38,22 +37,3 @@ class Tracker(object):
                 self.peers[i][j] -= 1
                 if self.peers[i][j] <= 0:
                     self.peers[i].pop(j)
-
-
-
-
-
-if __name__ == "__main__":
-    set_context()
-    h = create_host()
-    tracker=h.spawn('tracker1',Tracker)
-    tracker.announce('peli1','peer1')
-    tracker.announce('peli1', 'peer2')
-    tracker.announce('peli2', 'peer3')
-    tracker.init_start()
-    sleep(11)
-    tracker.get_peers('peli1')
-    shutdown()
-
-
-
