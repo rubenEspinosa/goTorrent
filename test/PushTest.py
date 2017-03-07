@@ -14,9 +14,9 @@ if __name__ == "__main__":
     peer3.attach_tracker(tracker)
 
 
-    tracker.announce('1a',peer)
-    tracker.announce('1a',peer2)
-    tracker.announce('1a',peer3)
+    tracker.announce('1a','peer')
+    tracker.announce('1a','peer2')
+    tracker.announce('1a','peer3')
 
 
 
@@ -38,7 +38,21 @@ if __name__ == "__main__":
     peer3.add_chunk(1, "A")
     peer3.add_chunk(7, "G")
 
-    peer.push(2, "B")
+    peer2.push(3, "C")
+
+    print "chunks que tiene peer3"
+    print peer3.get_values()                    #se han anadido los chunks de hacer push el peer2
+
+
+    peer3.push(6, "F")
+    peer3.push(1, "A")
+
+    print "chunks que tiene peer2"
+    print peer2.get_values()
+
+
+    peer.init_gossip_cycle()
+
 
 
 shutdown()

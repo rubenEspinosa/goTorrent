@@ -1,13 +1,14 @@
 from random import randint
 
 class Peer(object):
-    _tell = ['init_gossip_cycle','push','add_chunk','attach_tracker']
-    _ask = ['pull','get_chunks','get_values']
+    _tell = ['init_gossip_cycle','attach_tracker']
+    _ask = ['push','pull','get_chunks','get_values','add_chunk']
     _ref = ['attach_tracker']
 
 
     def __init__(self):
         self.operation = "push"
+        self.file = "1a"
         self.chunks = {}    #conte la llista de chunks que te el peer
 
     def init_gossip_cycle(self):
@@ -22,9 +23,11 @@ class Peer(object):
             pass
 
     def push(self,chunk_id,chunk_data):
-        peers= self.tracker.get_peers()
-        for peer in peers:
-            peer.add_chunk(chunk_id,chunk_data)
+        peers = self.tracker.get_peers(self.file)
+        peers.remove(self.id)                           #HABRIA QUE CAPTURAR EXCEPCION POR SI AL COJER ALEATORIOS NO COJE EL PROPIO
+        for peerStr in peers:
+            peerRef = self.host.lookup(peerStr)
+            peerRef.add_chunk(chunk_id,chunk_data)
             #self.tracker[peer].add_chunk(chunk_id,chunk_data)
 
     def pull(self,chunk_id):

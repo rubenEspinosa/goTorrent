@@ -10,7 +10,7 @@ if __name__ == "__main__":
     peer = h.spawn('peer', Peer)
     peer.attach_tracker(tracker)
     peer.add_chunk(1,"B")
-    peer.init_gossip_cycle()
+    #peer.init_gossip_cycle()
 
 #Comprovar lordre descriptura
     peer.add_chunk(6, "F")
