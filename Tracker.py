@@ -1,4 +1,5 @@
-from random import randint
+import random
+
 
 
 
@@ -9,29 +10,30 @@ class Tracker(object):
 
 
     def __init__(self):
-        self.peers = {}
+        self.torrent = {}
 
     def init_start(self):
         self.time = self.host.interval(1, self.proxy, "update")
 
     def announce(self,torrent_hash,peer_ref):
-        if not self.peers.has_key(torrent_hash):
-            self.peers[torrent_hash] = {}
-        self.peers[torrent_hash][peer_ref]=10
+        if not self.torrent.has_key(torrent_hash):
+            self.torrent[torrent_hash] = {}
+        self.torrent[torrent_hash][peer_ref]=10
 
     def get_peers(self,torrent_hash):
-        #array=[]
-        keys = self.peers[torrent_hash].keys()
-        #if keys.__len__() < 10 : lenght= keys.__len__()
-        #else: lenght=10
-        #for i in range(1,lenght):
-        #    array.append(randint(0,keys.__len__()))
-       # array
-        return keys
+        #keys = self.torrent[torrent_hash].keys()
+        #return keys
+        try:
+            return random.sample(self.torrent[torrent_hash].keys(), 10)
+        except:
+            return self.torrent[torrent_hash].keys()
+
+
 
     def update(self):
-        for i in self.peers.keys():
-            for j in self.peers[i].keys():
-                self.peers[i][j] -= 1
-                if self.peers[i][j] <= 0:
-                    self.peers[i].pop(j)
+        print self.torrent
+        for i in self.torrent.keys():
+            for j in self.torrent[i].keys():
+                self.torrent[i][j] -= 1
+                if self.torrent[i][j] <= 0:
+                    self.torrent[i].pop(j)

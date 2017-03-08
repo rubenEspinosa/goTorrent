@@ -12,13 +12,14 @@ if __name__ == "__main__":
     peer.attach_tracker(tracker)
     peer2.attach_tracker(tracker)
     peer3.attach_tracker(tracker)
+    #peer.init_gossip_cycle()
+    peer2.init_gossip_cycle()
+    #peer3.init_gossip_cycle()
 
 
     tracker.announce('1a','peer')
     tracker.announce('1a','peer2')
     tracker.announce('1a','peer3')
-
-
 
 #peer es la seed
     peer.add_chunk(6, "F")
@@ -38,20 +39,13 @@ if __name__ == "__main__":
     peer3.add_chunk(1, "A")
     peer3.add_chunk(7, "G")
 
-    peer2.push(3, "C")
+    #peer2.push(3, "C")
+    #peer3.push(6, "F")
+    #peer3.push(1, "A")
 
-    print "chunks que tiene peer3"
-    print peer3.get_values()                    #se han anadido los chunks de hacer push el peer2
+    sleep(10)
 
-
-    peer3.push(6, "F")
-    peer3.push(1, "A")
-
-    print "chunks que tiene peer2"
-    print peer2.get_values()
-
-
-    peer.init_gossip_cycle()
+    print peer3.get_values()
 
 
 
