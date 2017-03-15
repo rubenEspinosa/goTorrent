@@ -13,8 +13,9 @@ if __name__ == "__main__":
     peer2.attach_tracker(tracker)
     peer3.attach_tracker(tracker)
     #peer.init_gossip_cycle()
-    peer2.init_gossip_cycle()
+    #peer2.init_gossip_cycle()
     #peer3.init_gossip_cycle()
+
 
 
     tracker.announce('1a','peer')
@@ -39,11 +40,10 @@ if __name__ == "__main__":
     peer3.add_chunk(1, "A")
     peer3.add_chunk(7, "G")
 
-    #peer2.push(3, "C")
-    #peer3.push(6, "F")
-    #peer3.push(1, "A")
+    peer3.pull(1)
 
-    sleep(10)
+
+    #sleep(10)
 
     print peer3.get_values()
     print peer3.get_chunks()

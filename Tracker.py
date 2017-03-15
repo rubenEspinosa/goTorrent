@@ -28,8 +28,6 @@ class Tracker(object):
         except:
             return self.torrent[torrent_hash].keys()
 
-
-
     def update(self):
         print self.torrent
         for i in self.torrent.keys():
