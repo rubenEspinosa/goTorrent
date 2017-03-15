@@ -1,4 +1,5 @@
 import random
+from pyactor.context import interval
 
 class Peer(object):
     _tell = ['init_gossip_cycle','attach_tracker','propagate_chunk','add_chunk']
@@ -12,7 +13,7 @@ class Peer(object):
         self.chunks = {}    #conte la llista de chunks que te el peer
 
     def init_gossip_cycle(self):
-        self.time = self.host.interval(1, self.proxy, "propagate_chunk")
+        self.time = interval(self.host, 1, self.proxy, "propagate_chunk")
 
     def propagate_chunk(self):
         if self.operation=="push":

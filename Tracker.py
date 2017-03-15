@@ -1,5 +1,5 @@
 import random
-
+from pyactor.context import interval
 
 
 
@@ -13,7 +13,7 @@ class Tracker(object):
         self.torrent = {}
 
     def init_start(self):
-        self.time = self.host.interval(1, self.proxy, "update")
+        self.time = interval(self.host, 1, self.proxy, "update")
 
     def announce(self,torrent_hash,peer_ref):
         if not self.torrent.has_key(torrent_hash):
