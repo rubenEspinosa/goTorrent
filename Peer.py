@@ -10,7 +10,7 @@ class Peer(object):
     def __init__(self):
         self.operation = "pull"
         self.file = "1a"
-        self.size = 6
+        self.size = 2
         self.chunks = {}    #conte la llista de chunks que te el peer
 
     def init_gossip_cycle(self):
@@ -38,13 +38,18 @@ class Peer(object):
                 peerRef.add_chunk(chunk_id,chunk_data)
 
     def pull(self,chunk_id):
-        peers=self.tracker.get_peers
-        for i in peers:
-            print "aaaa"
-            peerRef = self.host.lookup(i)
-            chunk=peerRef.get_chunk(chunk_id)
-            print chunk
-            #self.add_chunk(chunk,self.chunks[chunk])
+        peers=self.tracker.get_peers(self.file)
+        try:
+            peers.remove(self.id)
+        except:
+            pass
+        finally:
+            for i in peers:
+                print "aaa"+i
+                peerRef = self.host.lookup(i)
+                chunk=peerRef.get_chunk(chunk_id)
+                print chunk
+                #self.add_chunk(chunk,self.chunks[chunk])
 
 
     def add_chunk(self,chunk_id,chunk_data):
