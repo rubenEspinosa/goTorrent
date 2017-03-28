@@ -2,16 +2,18 @@ import random
 from pyactor.context import interval
 
 class Peer(object):
-    _tell = ['init_gossip_cycle','attach_tracker','propagate_chunk','add_chunk','push']
-    _ask = ['pull','get_chunks','get_values','get_chunk']
+    _tell = ['init_gossip_cycle','attach_tracker','propagate_chunk','add_chunk','push','pull','set_mode']
+    _ask = ['get_chunks','get_values','get_chunk']
     _ref = ['attach_tracker']
 
 
     def __init__(self):
-        self.operation = "pull"
         self.file = "1a"
-        self.size = 2
+        self.size = 7
         self.chunks = {}    #conte la llista de chunks que te el peer
+
+    def set_mode(self,operation):
+        self.operation = operation
 
     def init_gossip_cycle(self):
         self.time = interval(self.host, 1, self.proxy, "propagate_chunk")
@@ -21,7 +23,7 @@ class Peer(object):
             var = random.choice(self.chunks.keys())
             self.push(var, self.chunks[var])
         elif self.operation=="pull":
-            chunk=random.randint(0,self.size-1)
+            chunk=random.randint(1,self.size-1)
             self.pull(chunk)
         else:
             pass
@@ -45,12 +47,9 @@ class Peer(object):
             pass
         finally:
             for i in peers:
-                print "aaa"+i
                 peerRef = self.host.lookup(i)
-                chunk=peerRef.get_chunk(chunk_id)
-                print chunk
-                #self.add_chunk(chunk,self.chunks[chunk])
-
+                future = peerRef.get_chunk(chunk_id, future=True)
+                future.add_callback('pong')
 
     def add_chunk(self,chunk_id,chunk_data):
         if not self.chunks.has_key(chunk_id):
@@ -63,13 +62,18 @@ class Peer(object):
         return self.chunks
 
     def get_chunk(self,chunk_id):
-        return (self.chunks[chunk_id])
+        return (chunk_id, self.chunks[chunk_id])
 
     def get_values(self):
         string = ""
         for i in self.chunks.values():
             string = string + i
         return string
+
+    def pong(self,future):
+        msg = future.result()
+        self.add_chunk(msg.__getitem__(0), msg.__getitem__(1))
+
 
 
 
