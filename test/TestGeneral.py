@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     f = open('chunksFile', 'r').read()
 
-    for i in range (1,f.__len__()):
+    for i in range (0,f.__len__()):
         peer.add_chunk(i, f[i])
 
 
@@ -43,6 +43,7 @@ if __name__ == "__main__":
 
 
     sleep(10)
+
 
     print peer3.get_chunks()
     print peer2.get_chunks()

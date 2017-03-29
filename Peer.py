@@ -9,7 +9,7 @@ class Peer(object):
 
     def __init__(self):
         self.file = "1a"
-        self.size = 7
+        self.size = 9
         self.chunks = {}    #conte la llista de chunks que te el peer
 
     def set_mode(self,operation):
@@ -20,11 +20,16 @@ class Peer(object):
 
     def propagate_chunk(self):
         if self.operation=="push" or self.operation=="push-pull":
-            var = random.choice(self.chunks.keys())
-            self.push(var, self.chunks[var])
+            try:
+                var = random.choice(self.chunks.keys())
+                self.push(var, self.chunks[var])
+            except:
+                pass
+            finally:
+                pass
 
         if self.operation=="pull" or self.operation=="push-pull":
-            chunk=random.randint(1,self.size-1)
+            chunk=random.randint(0,self.size-1)
             self.pull(chunk)
 
     def push(self,chunk_id,chunk_data):
@@ -35,8 +40,13 @@ class Peer(object):
             pass
         finally:
             for peerStr in peers:
-                peerRef = self.host.lookup(peerStr)
-                peerRef.add_chunk(chunk_id,chunk_data)
+                try:
+                    peerRef = self.host.lookup(peerStr)
+                    peerRef.add_chunk(chunk_id,chunk_data)
+                except:
+                    pass
+                finally:
+                    pass
 
     def pull(self,chunk_id):
         peers=self.tracker.get_peers(self.file)

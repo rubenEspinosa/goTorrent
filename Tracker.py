@@ -21,12 +21,11 @@ class Tracker(object):
         self.torrent[torrent_hash][peer_ref]=10
 
     def get_peers(self,torrent_hash):
-        #keys = self.torrent[torrent_hash].keys()
-        #return keys
-        try:
-            return random.sample(self.torrent[torrent_hash].keys(), 10)
-        except:
-            return self.torrent[torrent_hash].keys()
+        keys= self.torrent[torrent_hash].keys()
+        if keys.__len__() > 10:
+            return random.sample(keys, 10)
+        else:
+            return keys
 
     def update(self):
         for i in self.torrent.keys():
