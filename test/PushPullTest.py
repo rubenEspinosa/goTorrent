@@ -1,4 +1,4 @@
-from pyactor.context import set_context, create_host, sleep, shutdown , interval
+from pyactor.context import set_context, create_host, sleep, shutdown
 from Peer import *
 from Tracker import *
 

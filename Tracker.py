@@ -29,7 +29,6 @@ class Tracker(object):
             return self.torrent[torrent_hash].keys()
 
     def update(self):
-        print self.torrent
         for i in self.torrent.keys():
             for j in self.torrent[i].keys():
                 self.torrent[i][j] -= 1

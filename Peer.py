@@ -19,14 +19,13 @@ class Peer(object):
         self.time = interval(self.host, 1, self.proxy, "propagate_chunk")
 
     def propagate_chunk(self):
-        if self.operation=="push":
+        if self.operation=="push" or self.operation=="push-pull":
             var = random.choice(self.chunks.keys())
             self.push(var, self.chunks[var])
-        elif self.operation=="pull":
+
+        if self.operation=="pull" or self.operation=="push-pull":
             chunk=random.randint(1,self.size-1)
             self.pull(chunk)
-        else:
-            pass
 
     def push(self,chunk_id,chunk_data):
         peers = self.tracker.get_peers(self.file)
@@ -47,9 +46,14 @@ class Peer(object):
             pass
         finally:
             for i in peers:
-                peerRef = self.host.lookup(i)
-                future = peerRef.get_chunk(chunk_id, future=True)
-                future.add_callback('pong')
+                try:
+                    peerRef = self.host.lookup(i)
+                    future = peerRef.get_chunk(chunk_id, future=True)
+                    future.add_callback('pong')
+                except:
+                    pass
+                finally:
+                    pass
 
     def add_chunk(self,chunk_id,chunk_data):
         if not self.chunks.has_key(chunk_id):
@@ -71,8 +75,13 @@ class Peer(object):
         return string
 
     def pong(self,future):
-        msg = future.result()
-        self.add_chunk(msg.__getitem__(0), msg.__getitem__(1))
+        try:
+            msg = future.result()
+            self.add_chunk(msg.__getitem__(0), msg.__getitem__(1))
+        except:
+            pass
+        finally:
+            pass
 
 
 
