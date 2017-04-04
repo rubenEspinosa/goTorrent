@@ -2,21 +2,48 @@ import random
 from pyactor.context import interval
 
 class Peer(object):
-    _tell = ['init_gossip_cycle','attach_tracker','propagate_chunk','add_chunk','push','pull','set_mode']
-    _ask = ['get_chunks','get_values','get_chunk']
+    _tell = ['set_file','set_mode','set_size','attach_tracker','add_chunk','announce','init_gossip_cycle','propagate_chunk','push','pull']
+    _ask = ['get_chunks','get_chunk','get_values']
     _ref = ['attach_tracker']
 
 
     def __init__(self):
-        self.file = "1a"
-        self.size = 9
         self.chunks = {}    #conte la llista de chunks que te el peer
+
+    def set_file(self,file):
+        self.file = file
 
     def set_mode(self,operation):
         self.operation = operation
 
+    def set_size(self,torrent_size):
+	self.size = torrent_size
+
+    def attach_tracker(self, tracker):
+        self.tracker = tracker
+
+    def add_chunk(self,chunk_id,chunk_data):
+        if not self.chunks.has_key(chunk_id):
+            self.chunks[chunk_id] = chunk_data
+
+    def get_chunks(self):
+        return self.chunks
+
+    def get_chunk(self,chunk_id):
+        return (chunk_id, self.chunks[chunk_id])
+
+    def get_values(self):
+        string = ""
+        for i in self.chunks.values():
+            string = string + i
+        return string
+
+    def announce(self):
+        self.tracker.announce(self.file,self.id)
+
     def init_gossip_cycle(self):
-        self.time = interval(self.host, 1, self.proxy, "propagate_chunk")
+        self.time = interval(self.host, 2, self.proxy, "propagate_chunk")
+        self.announce = interval(self.host, 5, self.proxy, "announce")
 
     def propagate_chunk(self):
         if self.operation=="push" or self.operation=="push-pull":
@@ -65,25 +92,6 @@ class Peer(object):
                 finally:
                     pass
 
-    def add_chunk(self,chunk_id,chunk_data):
-        if not self.chunks.has_key(chunk_id):
-            self.chunks[chunk_id] = chunk_data
-
-    def attach_tracker(self, tracker):
-        self.tracker = tracker
-
-    def get_chunks(self):
-        return self.chunks
-
-    def get_chunk(self,chunk_id):
-        return (chunk_id, self.chunks[chunk_id])
-
-    def get_values(self):
-        string = ""
-        for i in self.chunks.values():
-            string = string + i
-        return string
-
     def pong(self,future):
         try:
             msg = future.result()
@@ -92,9 +100,3 @@ class Peer(object):
             pass
         finally:
             pass
-
-
-
-
-
-
