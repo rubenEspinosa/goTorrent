@@ -27,27 +27,47 @@ if __name__ == "__main__":
     peer4.attach_tracker(tracker)
     peer5.attach_tracker(tracker)
 
+    peer.set_file("1a")
+    peer2.set_file("1a")
+    peer3.set_file("1a")
+    peer4.set_file("1a")
+    peer5.set_file("1a")
+
     f = open('chunksFile', 'r').read()
+
+    peer.set_size(f.__len__())
+    peer2.set_size(f.__len__())
+    peer3.set_size(f.__len__())
+    peer4.set_size(f.__len__())
+    peer5.set_size(f.__len__())
 
     for i in range (0,f.__len__()):
         peer.add_chunk(i, f[i])
 
-
     tracker.announce('1a','peer')
     tracker.announce('1a','peer2')
     tracker.announce('1a','peer3')
+    tracker.announce('1a', 'peer4')
+    tracker.announce('1a', 'peer5')
 
     peer.init_gossip_cycle()
     peer2.init_gossip_cycle()
     peer3.init_gossip_cycle()
+    peer4.init_gossip_cycle()
+    peer5.init_gossip_cycle()
 
+    sleep(11)
 
-    sleep(10)
-
-
+    print peer5.get_chunks()
+    print peer4.get_chunks()
     print peer3.get_chunks()
     print peer2.get_chunks()
     print peer.get_chunks()
 
+    print peer.get_values()
+    print peer2.get_values()
+    print peer3.get_values()
+    print peer4.get_values()
+    print peer5.get_values()
 
-shutdown()
+    shutdown()

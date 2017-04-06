@@ -2,12 +2,10 @@ import random
 from pyactor.context import interval
 
 
-
 class Tracker(object):
     _tell = ['announce','init_start','update']
     _ask = ['get_peers']
     _ref = ['announce']
-
 
     def __init__(self):
         self.torrent = {}

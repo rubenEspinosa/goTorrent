@@ -5,7 +5,9 @@ from Tracker import *
 if __name__ == "__main__":
     set_context()
     h = create_host()
+
     tracker=h.spawn('tracker1',Tracker)
+
     tracker.announce('peli1','peer1')
     tracker.announce('peli1', 'peer2')
     tracker.announce('peli1', 'peer5')
@@ -27,9 +29,13 @@ if __name__ == "__main__":
     tracker.announce('peli1', 'peer19')
     tracker.announce('peli1', 'peer20')
     tracker.announce('peli2', 'peer3')
+
     tracker.init_start()
+
     sleep(11)
+
     print tracker.get_peers('peli1')
+
     shutdown()
 
 

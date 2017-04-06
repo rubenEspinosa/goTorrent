@@ -6,7 +6,6 @@ class Peer(object):
     _ask = ['get_chunks','get_chunk','get_values']
     _ref = ['attach_tracker']
 
-
     def __init__(self):
         self.chunks = {}    #conte la llista de chunks que te el peer
 
@@ -17,9 +16,9 @@ class Peer(object):
         self.operation = operation
 
     def set_size(self,torrent_size):
-	self.size = torrent_size
+        self.size = torrent_size
 
-    def attach_tracker(self, tracker):
+    def attach_tracker(self,tracker):
         self.tracker = tracker
 
     def add_chunk(self,chunk_id,chunk_data):
@@ -39,11 +38,11 @@ class Peer(object):
         return string
 
     def announce(self):
-        self.tracker.announce(self.file,self.id)
+        self.tracker.announce(self.file, self.id)
 
     def init_gossip_cycle(self):
         self.time = interval(self.host, 2, self.proxy, "propagate_chunk")
-        self.announce = interval(self.host, 5, self.proxy, "announce")
+        self.time2 = interval(self.host, 5, self.proxy, "announce")
 
     def propagate_chunk(self):
         if self.operation=="push" or self.operation=="push-pull":

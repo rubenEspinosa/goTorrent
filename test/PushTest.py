@@ -5,20 +5,31 @@ from Tracker import *
 if __name__ == "__main__":
     set_context()
     h = create_host()
+
     tracker = h.spawn('tracker1', Tracker)
     peer = h.spawn('peer', Peer)
     peer2 = h.spawn('peer2', Peer)
     peer3 = h.spawn('peer3', Peer)
+
     peer.set_mode("push")
     peer2.set_mode("push")
     peer3.set_mode("push")
+
     peer.attach_tracker(tracker)
     peer2.attach_tracker(tracker)
     peer3.attach_tracker(tracker)
+
+    peer.set_file("1a")
+    peer2.set_file("1a")
+    peer3.set_file("1a")
+
+    peer.set_size(7)
+    peer2.set_size(7)
+    peer3.set_size(7)
+
     peer.init_gossip_cycle()
     peer2.init_gossip_cycle()
     peer3.init_gossip_cycle()
-
 
     tracker.announce('1a','peer')
     tracker.announce('1a','peer2')
