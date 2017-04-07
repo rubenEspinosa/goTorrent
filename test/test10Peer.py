@@ -90,7 +90,7 @@ if __name__ == "__main__":
    peer8.init_gossip_cycle()
    peer9.init_gossip_cycle()
 
-   sleep(10)
+   sleep(11)
 
    print peer0.get_chunks()
    print peer1.get_chunks()
