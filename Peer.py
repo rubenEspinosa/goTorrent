@@ -37,6 +37,7 @@ class Peer(object):
             string = string + i
         return string
 
+
     def announce(self):
         self.tracker.announce(self.file, self.id)
 
