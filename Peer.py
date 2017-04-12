@@ -2,7 +2,7 @@ import random
 from pyactor.context import interval
 
 class Peer(object):
-    _tell = ['set_file','set_mode','set_size','attach_tracker','add_chunk','announce','init_gossip_cycle','propagate_chunk','push','pull']
+    _tell = ['set_file','set_mode','set_size','attach_tracker','add_chunk','announce','stop_interval','init_gossip_cycle','propagate_chunk','push','pull']
     _ask = ['get_chunks','get_chunk','get_values']
     _ref = ['attach_tracker']
 
@@ -39,6 +39,10 @@ class Peer(object):
 
     def announce(self):
         self.tracker.announce(self.file, self.id)
+
+    def stop_interval(self):
+        self.time.set()
+        self.time2.set()
 
     def init_gossip_cycle(self):
         self.time = interval(self.host, 2, self.proxy, "propagate_chunk")

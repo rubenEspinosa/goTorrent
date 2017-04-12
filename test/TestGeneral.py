@@ -56,7 +56,13 @@ if __name__ == "__main__":
     peer4.init_gossip_cycle()
     peer5.init_gossip_cycle()
 
-    sleep(11)
+    sleep(16)
+
+    peer.stop_interval()
+    peer2.stop_interval()
+    peer3.stop_interval()
+    peer4.stop_interval()
+    peer5.stop_interval()
 
     print peer5.get_chunks()
     print peer4.get_chunks()
